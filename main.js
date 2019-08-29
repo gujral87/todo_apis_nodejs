@@ -1,17 +1,20 @@
+require('dotenv').config();
+// Dependency
 const express = require('express');
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const uuidv4 = require('uuid/v4');
 
+// Imports
+import {postState, getState, putState, deleteState} from './methods/state';
+
+// Create app with Express
 const app = express();
-
-app.use(bodyParser.urlencoded({ extended: false }));
+const PORT = process.env.PORT;
+// Middleware
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
-// APIs
-app.get("/", (req,res) => {
-    res.send("Welcome to Todo APIs");
-});
-
-/**
+app.route("/todo/apis/v1/crud")
+    /**
  * POST method to ADD
  *
  * @param      {object}  objectValue with following parameters
@@ -25,78 +28,64 @@ app.get("/", (req,res) => {
  * @return     {object}  Will return object value
  * {
  *     "status": BOOLEAN,
- *     "data": {} // recently added task
+ *     "data": {} // recently added task, only in-case of status true
+ *     "error" :  "STRING" // in-case status is false
  * }
  */
-app.post("/todo/apis/v1/post", (req,res) => {
-    res.send("POST to Todo APIs");
-});
+    .post(postState)
+    /**
+     * Get method to ADD
+     *
+     * @param      {object}  objectValue with following parameters,
+     *  Params are Optional for specific GET request, if no param found it will return all data
+     * {
+     *      "query: "STRING", // , no. of limit item required.
+     *      "category": "STRING", // String Array, Optional
+     *      "limit": NUMBER
+     * }
+     * @return     {object}  Will return object value
+     * {
+     *     "status": BOOLEAN,
+     *     "data": [{
+     *         "id" : UUID
+     *         "task": "STRING",
+     *         "category": ["STRING"],
+     *         "timeCreated" :  NUMBER
+     *     }] // Result in Array of Objects
+     * }
+     */
+    .get(getState)
+    /**
+     * Update method to ADD
+     *
+     * @param      {object}  objectValue with following parameters,
+     *  Params are Optional for specific GET request, if no param found it will return all data
+     * {
+     *      "id": UUID,
+     *      "query: "STRING", // , no. of limit item required.
+     *      "category": "STRING", // String Array, Optional
+     *      "limit": NUMBER
+     * }
+     * @return     {object}  Will return object value
+     * {
+     *     "status": BOOLEAN,
+     *     "data": [OBJECT] // Result in Array of Objects
+     * }
+     */
+    .put(putState)
+    /**
+     * Update method to ADD
+     *
+     * @param      {object}  objectValue with following parameters,
+     *  Params are Optional for specific GET request, if no param found it will return all data
+     * {
+     *      "id": UUID
+     * }
+     * @return     {object}  Will return object value
+     * {
+     *     "status": BOOLEAN
+     * }
+     */
+    .delete(deleteState);
 
-/**
- * Get method to ADD
- *
- * @param      {object}  objectValue with following parameters,
- *  Params are Optional for specific GET request, if no param found it will return all data
- * {
- *      "query: "STRING", // , no. of limit item required.
- *      "category": "STRING", // String Array, Optional
- *      "limit": NUMBER
- * }
- * @return     {object}  Will return object value
- * {
- *     "status": BOOLEAN,
- *     "data": [{
- *         "id" : UUID
- *         "task": "STRING",
- *         "category": ["STRING"],
- *         "timeCreated" :  NUMBER
- *     }] // Result in Array of Objects
- * }
- */
-app.get("/todo/apis/v1/get", (req,res) => {
-    res.send("GET to Todo APIs");
-});
-
-/**
- * Update method to ADD
- *
- * @param      {object}  objectValue with following parameters,
- *  Params are Optional for specific GET request, if no param found it will return all data
- * {
- *      "id": UUID,
- *      "query: "STRING", // , no. of limit item required.
- *      "category": "STRING", // String Array, Optional
- *      "limit": NUMBER
- * }
- * @return     {object}  Will return object value
- * {
- *     "status": BOOLEAN,
- *     "data": [OBJECT] // Result in Array of Objects
- * }
- */
-app.put("/todo/apis/v1/put", (req,res) => {
-    res.send("UPDATE to Todo APIs");
-});
-
-
-/**
- * Update method to ADD
- *
- * @param      {object}  objectValue with following parameters,
- *  Params are Optional for specific GET request, if no param found it will return all data
- * {
- *      "id": UUID
- * }
- * @return     {object}  Will return object value
- * {
- *     "status": BOOLEAN
- * }
- */
-app.delete("/todo/apis/v1/delete", (req,res) => {
-    res.send("DELETE to Todo APIs");
-});
-
-
-
-
-app.listen("3000");
+app.listen(PORT, () => console.log(`Server running at ${PORT}`));
