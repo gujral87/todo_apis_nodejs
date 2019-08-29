@@ -1,37 +1,54 @@
+import {todo_model} from '../common/dbState';
 import {errorState, succesState} from "../common/state";
 
 export const postState = (req, res) => {
-    if (req.body && req.body.constructor === Object) {
-        if (req.body.task && req.body.category && req.body.category.constructor === Array) {
-            let todoItem = {id: uuidv4(), ...req.body, timeCreated: new Date()};
-            res.send(todoItem);
-        } else {
-            errorState({res,
-                "error": "Format is not correct."
+    todo_model.create(req.body)
+        .then(data => {
+            succesState({res, data});
+        })
+        .catch(err => {
+            errorState({
+                res,
+                "error": err.message
             });
-        }
-    } else {
-        errorState({
-            res,
-            "error": "Object is either empty OR not an object. Make sure task key is presented."
         });
-    }
 };
 
 export const getState = (req, res) => {
-    console.log(req.body);
-    res.send("GET to Todo APIs");
+    todo_model.find(req.body)
+        .then(data => {
+            succesState({res, data});
+        })
+        .catch(err => {
+            errorState({
+                res,
+                "error": err.message
+            });
+        });
 };
 
 export const putState = (req, res) => {
-    console.log(req.body);
-    res.send("UPDATE to Todo APIs");
+    todo_model.updateOne({_id: req.body.id}, req.body)
+        .then(data => {
+            succesState({res, data});
+        })
+        .catch(err => {
+            errorState({
+                res,
+                "error": err.message
+            });
+        });
 };
 
 export const deleteState = (req, res) => {
-    if(req.body.id) {
-        res.send("DELETE to Todo APIs");
-    } else {
-        errorState({res, "error": "ID missing."});
-    }
+    todo_model.deleteOne({_id: req.body.id})
+        .then(data => {
+            succesState({res, data});
+        })
+        .catch(err => {
+            errorState({
+                res,
+                "error": err.message
+            });
+        });
 };
