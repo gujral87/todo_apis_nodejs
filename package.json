@@ -1,7 +1,7 @@
 {
   "name": "todo_apis_nodejs_mongodb",
   "version": "1.0.0",
-  "description": "Todo APIs with nodejs & mongoDB",
+  "description": "Todo APIs with nodejs, express &  mongoDB",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
