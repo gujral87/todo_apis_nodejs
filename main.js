@@ -4,12 +4,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const uuidv4 = require('uuid/v4');
 
+
+
+
 // Imports
+import './common/dbState';
 import {postState, getState, putState, deleteState} from './methods/state';
 
 // Create app with Express
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());

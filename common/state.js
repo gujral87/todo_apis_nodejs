@@ -10,6 +10,6 @@ export const errorState = (state) => {
 export const succesState = (state) => {
     state.res.send({
         "status": true,
-        "data": []
+        "data": state.data
     });
 };
