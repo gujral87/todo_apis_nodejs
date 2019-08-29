@@ -1,5 +1,3 @@
-// Error function
-
 export const errorState = (state) => {
     state.res.send({
         "status": false,
