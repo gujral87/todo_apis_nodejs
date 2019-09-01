@@ -36,10 +36,18 @@ export const getState = (req, res) => {
 };
 
 export const searchState = (req,res) => {
-    console.log(req.body.query);
-    todo_model.find({
-        "task":req.body.query
-    })
+    var searchStr = {};
+    var regex = new RegExp(req.body.query, "i");
+    searchStr = {
+        $or: [{
+            'task': regex
+        }, {
+            'category': regex
+        }
+        ]
+    };
+
+    todo_model.find(searchStr)
         .then(data => {
             console.log(data);
             succesState({res, data});
@@ -66,7 +74,6 @@ export const putState = (req, res) => {
 };
 
 export const deleteState = (req, res) => {
-    console.log(req.params);
     todo_model.deleteOne({_id: req.params.id})
         .then(data => {
             succesState({res, data});
