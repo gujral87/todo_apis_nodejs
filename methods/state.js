@@ -8,7 +8,7 @@ export const postState = (req, res) => {
                 succesState({res, data});
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 errorState({
                     res,
                     "error": err.message
@@ -23,8 +23,25 @@ export const postState = (req, res) => {
 };
 
 export const getState = (req, res) => {
-    todo_model.find(req.body)
+    todo_model.find()
         .then(data => {
+            succesState({res, data});
+        })
+        .catch(err => {
+            errorState({
+                res,
+                "error": err.message
+            });
+        });
+};
+
+export const searchState = (req,res) => {
+    console.log(req.body.query);
+    todo_model.find({
+        "task":req.body.query
+    })
+        .then(data => {
+            console.log(data);
             succesState({res, data});
         })
         .catch(err => {
@@ -49,6 +66,7 @@ export const putState = (req, res) => {
 };
 
 export const deleteState = (req, res) => {
+    console.log(req.params);
     todo_model.deleteOne({_id: req.params.id})
         .then(data => {
             succesState({res, data});

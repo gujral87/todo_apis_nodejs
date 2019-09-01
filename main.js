@@ -3,11 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const uuidv4 = require('uuid/v4');
+const cors = require("cors");
 
 
 // Imports
 import './common/dbState';
-import {postState, getState, putState, deleteState} from './methods/state';
+import {postState, getState, putState, deleteState, searchState} from './methods/state';
 
 // Create app with Express
 const app = express();
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cors());
 /**
  * POST method to ADD
  * @body      {object}  objectValue with following parameters // Check DB Schema
@@ -27,6 +29,7 @@ app.post('/todo/apis/v1/crud/post', postState);
  * @return     {object}  Will return object value
  */
 app.get('/todo/apis/v1/crud/get', getState);
+app.post('/todo/apis/v1/crud/search', searchState);
 /**
  * Update Item method to ADD
  * @param      {String}  objectValue with following parameters // Check DB Schema
