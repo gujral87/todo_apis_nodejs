@@ -23,33 +23,9 @@ export const postState = (req, res) => {
 };
 
 export const getState = (req, res) => {
-    todo_model.find()
+    var query = req.params.query ? {"task": req.params.query} :{};
+    todo_model.find(query)
         .then(data => {
-            succesState({res, data});
-        })
-        .catch(err => {
-            errorState({
-                res,
-                "error": err.message
-            });
-        });
-};
-
-export const searchState = (req,res) => {
-    var searchStr = {};
-    var regex = new RegExp(req.body.query, "i");
-    searchStr = {
-        $or: [{
-            'task': regex
-        }, {
-            'category': regex
-        }
-        ]
-    };
-
-    todo_model.find(searchStr)
-        .then(data => {
-            console.log(data);
             succesState({res, data});
         })
         .catch(err => {
@@ -61,7 +37,7 @@ export const searchState = (req,res) => {
 };
 
 export const putState = (req, res) => {
-    todo_model.updateOne({_id: req.params.id}, req.body)
+    todo_model.findOneAndUpdate({_id: req.params.id}, {$set:req.body}, {new: true})
         .then(data => {
             succesState({res, data});
         })
