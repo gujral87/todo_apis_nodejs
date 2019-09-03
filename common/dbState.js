@@ -1,6 +1,7 @@
 // getting-started.js
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://superman:superman123@ds359077.mlab.com:59077/project_todo_db', {useNewUrlParser: true});
+mongoose.set('useFindAndModify', false);
 
 mongoose.Promise = Promise;
 
