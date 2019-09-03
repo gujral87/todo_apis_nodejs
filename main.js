@@ -8,7 +8,7 @@ const cors = require("cors");
 
 // Imports
 import './common/dbState';
-import {postState, getState, putState, deleteState, searchState} from './methods/state';
+import {postState, getState, putState, deleteState} from './methods/state';
 
 // Create app with Express
 const app = express();
@@ -25,11 +25,10 @@ app.use(cors());
 app.post('/todo/apis/v1/crud/post', postState);
 /**
  * Get method to ADD
- * @body        {Object} objectValue with following parameters // Check DB Schema
- * @return     {object}  Will return object value
+ * @param        {String} objectValue with following parameters // Check DB Schema
+ * @return     {Array}  Will return Array value
  */
-app.get('/todo/apis/v1/crud/get', getState);
-app.post('/todo/apis/v1/crud/search', searchState);
+app.get('/todo/apis/v1/crud/get/:query?', getState);
 /**
  * Update Item method to ADD
  * @param      {String}  objectValue with following parameters // Check DB Schema
@@ -40,7 +39,6 @@ app.put('/todo/apis/v1/crud/put/:id', putState);
 /**
  * Delete Item method to ADD
  * @param      {String}  objectValue with following parameters // Check DB Schema
- * @body        {Object}
  * @return     {object}  Will return object value
  */
 app.delete('/todo/apis/v1/crud/delete/:id', deleteState);
